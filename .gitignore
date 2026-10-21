@@ -1,0 +1,17 @@
+node_modules/
+.svelte-kit/
+build/
+
+.env
+.env.*
+!.env.example
+
+data/
+
+*.log
+.DS_Store
+Thumbs.db
+
+.taste-skill/
+.opencode/
+.project/
