@@ -1,0 +1,28 @@
+services:
+  studio-drive:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: studio-drive:latest
+    container_name: studio-drive
+    restart: unless-stopped
+    init: true
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    environment:
+      PORT: "${PORT:-3000}"
+      HOST: "0.0.0.0"
+      BODY_SIZE_LIMIT: "${BODY_SIZE_LIMIT:-3G}"
+      DB_PATH: "./data/app.db"
+      APP_BASE_URL: "${APP_BASE_URL:-}"
+      BAIDU_ACCESS_TOKEN: "${BAIDU_ACCESS_TOKEN:-}"
+      BAIDU_AUTHORIZE_URL: "${BAIDU_AUTHORIZE_URL:-}"
+    volumes:
+      - ./data:/app/data
+      # 如果 Docker Desktop 下 SQLite 出现 WAL 锁问题，改用命名卷：
+      # - studio-drive-data:/app/data
+    stop_grace_period: 30s
+
+# 使用上面的命名卷时取消注释：
+# volumes:
+#   studio-drive-data:

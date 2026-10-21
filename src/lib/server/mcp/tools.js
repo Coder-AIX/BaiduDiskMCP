@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { env } from "$env/dynamic/private";
 import { AppError, ERROR_CODES } from "../result.js";
 import {
     listGrants,
@@ -39,7 +40,7 @@ function getBaseUrl() {
         }
     }
 
-    return `http://localhost:${process.env.PORT ?? 3000}`;
+    return `http://localhost:${env.PORT || 3000}`;
 }
 
 function toolSuccess(data) {

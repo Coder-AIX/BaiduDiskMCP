@@ -62,7 +62,8 @@ CREATE TABLE IF NOT EXISTS admin_sessions (
 const DEFAULT_SETTINGS = {
     baidu_access_token: env.BAIDU_ACCESS_TOKEN ?? "",
     baidu_app_name: env.BAIDU_APP_NAME ?? "",
-    app_base_url: env.APP_BASE_URL ?? "http://localhost:3000",
+    app_base_url:
+        env.APP_BASE_URL?.trim() || `http://localhost:${env.PORT || 3000}`,
     baidu_authorize_url: env.BAIDU_AUTHORIZE_URL ?? "",
     upload_link_ttl_sec: "900",
     max_upload_size: "2147483648"

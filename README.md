@@ -56,7 +56,8 @@ APP_BASE_URL=http://localhost:3000
 说明：
 
 - `APP_BASE_URL` 用于生成上传、下载短链，必须是成员实际可访问的地址。部署到局域网或域名后要同步修改。
-- `PORT` 默认 `3000`，`HOST` 默认 `0.0.0.0`。
+- `PORT` 默认 `3000`，开发（`npm run dev`）与生产（`npm start`）使用同一端口。
+- 修改 `PORT` 后要同步修改 `APP_BASE_URL`，或登录管理端在设置页更新短链地址；否则生成的短链仍指向旧地址。
 - `BODY_SIZE_LIMIT` 是请求体上限，必须大于设置中的 `max_upload_size`（默认 2GB），示例值为 `3G`。
 - 首次启动时 `BAIDU_ACCESS_TOKEN` 会作为种子写入数据库，之后以管理端设置为准。
 
@@ -262,6 +263,143 @@ npm start
 `npm start` 实际执行 `node --env-file=.env build`，需要确保 `.env` 与构建产物 `build/` 存在。
 
 建议使用 pm2、systemd 或容器等方式守护进程，并持久化 `data/` 目录。
+
+### Windows 便携包
+
+执行：
+
+```bash
+npm run package:win
+```
+
+产物位于 `release/`，包含未压缩目录和 zip：
+
+```text
+release/studio-drive-0.1.0-win-x64/
+    studio-drive.exe    启动器，双击运行
+    node.exe            Node 22 运行时
+    .env                默认端口 3000，不含密钥
+    build/              构建产物
+    node_modules/       生产依赖
+    data/               运行时数据库与临时文件
+    README.txt
+```
+
+说明：
+
+- 目标机器为 Windows x64，不需要安装 Node.js。
+- 启动器会把工作目录切换到自身所在目录，启动服务并自动打开 `http://localhost:<PORT>/admin`（默认 3000）。
+- 不需要自动打开浏览器时可执行 `studio-drive.exe --no-browser`。
+- 端口被占用时会直接打开管理端页面；关闭控制台窗口或按 `Ctrl+C` 停止服务。
+- 便携包默认使用全新的空数据库。需要保留现有配置时，停止服务后把 `data/app.db`（以及 `data/app.db-wal`、`data/app.db-shm`）复制到便携包的 `data/` 目录。
+- 包内的 `.env` 由 `.env.example` 生成，不包含百度 token 等敏感信息。
+- 首次运行如遇 Windows 防火墙提示，需要放行才能让局域网成员访问。
+- 启动器未签名，可能触发 SmartScreen 提示；选择“更多信息 → 仍要运行”即可。
+
+### Linux / macOS 便携包
+
+Linux：
+
+```bash
+npm run package:linux
+```
+
+输出 `release/studio-drive-0.1.0-linux-x64.tar.gz`（arm64 机器上为 `linux-arm64`）。
+
+```bash
+tar -xzf release/studio-drive-0.1.0-linux-x64.tar.gz
+cd studio-drive-0.1.0-linux-x64
+./start.sh
+```
+
+没有 Linux 主机时，可以用 Docker 导出：
+
+```bash
+npm run package:linux:docker
+npm run package:linux:docker:arm64
+```
+
+产物分别位于 `release/linux-x64/` 和 `release/linux-arm64/`，可自行压缩。
+
+macOS：
+
+```bash
+npm run package:macos
+```
+
+输出 `release/studio-drive-0.1.0-macos-arm64.tar.gz`（Intel Mac 为 `macos-x64`）。
+
+```bash
+tar -xzf release/studio-drive-0.1.0-macos-arm64.tar.gz
+cd studio-drive-0.1.0-macos-arm64
+双击 start.command
+```
+
+说明：
+
+- Linux/macOS 包内置对应平台的 Node 运行时，目标机器不需要安装 Node.js。
+- SQLite 原生模块与平台、架构绑定，不能跨平台或跨架构复用。
+- Linux 包适用于 glibc 系统（Debian/Ubuntu/CentOS 等），不支持 Alpine。
+- macOS 包只能在 Mac 上构建；Apple Silicon 和 Intel 需要分别构建。
+- macOS 包未签名，首次打开可能被 Gatekeeper 拦截；右键选择“打开”，或执行 `xattr -dr com.apple.quarantine <目录>`。
+- 打包脚本会自动下载与当前 Node 版本、架构匹配的官方 Node；无法访问 `nodejs.org` 时可设置 `NODE_MIRROR`，例如 `NODE_MIRROR=https://npmmirror.com/mirrors/node npm run package:macos`。
+- 已有可用的 Node 二进制时，可通过 `NODE_BIN=/path/to/node` 跳过下载，但 ABI 必须与构建时使用的 Node 一致。
+- 端口、`APP_BASE_URL`、数据迁移与 Windows 包一致。
+
+### Docker 与 docker-compose
+
+准备环境变量：
+
+```bash
+cp .env.example .env
+```
+
+按实际访问地址修改 `.env`：
+
+```dotenv
+PORT=3000
+APP_BASE_URL=http://localhost:3000
+```
+
+启动：
+
+```bash
+docker compose up -d --build
+docker compose logs -f
+```
+
+访问 `http://localhost:3000/admin`。
+
+停止与重建：
+
+```bash
+docker compose down
+docker compose up -d --build
+```
+
+说明：
+
+- `./data` 绑定到容器 `/app/data`，数据库和临时文件直接保存在宿主机。
+- Linux 下首次启动前确保目录可写：`mkdir -p data && sudo chown -R 1000:1000 data`。
+- 如果 Docker Desktop 下 SQLite 出现 WAL 锁或性能问题，按 `docker-compose.yml` 注释改用命名卷。
+- 局域网或域名访问时，把 `APP_BASE_URL` 改为成员可访问的地址，并放行对应端口。
+- `BODY_SIZE_LIMIT` 默认 `3G`，必须大于管理端的上传上限。
+- 反向代理配置与下文 Nginx 示例相同，代理目标改为 `127.0.0.1:3000`。
+- 备份时停止容器后复制 `data/`。
+- Docker 运行镜像基于 `node:22-bookworm-slim`，不使用 Alpine，避免 SQLite 原生模块兼容问题。
+
+### 构建矩阵
+
+| 目标 | 构建环境 | 命令 | 产物 |
+|---|---|---|---|
+| Windows x64 | Windows | `npm run package:win` | zip |
+| Linux x64 | Linux 或 Docker | `npm run package:linux` / `package:linux:docker` | tar.gz / 目录 |
+| Linux arm64 | Linux arm64 或 Docker buildx | `package:linux:docker:arm64` | 目录 |
+| macOS arm64 | Apple Silicon Mac | `npm run package:macos` | tar.gz |
+| macOS x64 | Intel Mac | `npm run package:macos` | tar.gz |
+| Docker 镜像 | 任意 Docker 主机 | `npm run docker:up` | 运行容器 |
+
+注意：`better-sqlite3` 是原生模块，不能在一台机器上直接交叉产出所有平台包。Linux 可借助 Docker buildx，macOS 必须使用 macOS 构建机。
 
 ### 反向代理
 

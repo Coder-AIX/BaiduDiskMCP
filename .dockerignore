@@ -1,0 +1,15 @@
+node_modules
+build
+.svelte-kit
+data
+release
+.cache
+.git
+.github
+.env
+.env.*
+!.env.example
+*.log
+.project
+.opencode
+.taste-skill

@@ -10,7 +10,15 @@
         "dev": "vite dev",
         "build": "vite build",
         "preview": "vite preview",
-        "start": "node --env-file=.env build"
+        "start": "node --env-file=.env build",
+        "package:win": "node scripts/package-win.mjs",
+        "package:linux": "node scripts/package-posix.mjs --target linux",
+        "package:macos": "node scripts/package-posix.mjs --target macos",
+        "package:linux:docker": "node scripts/package-linux-docker.mjs x64",
+        "package:linux:docker:arm64": "node scripts/package-linux-docker.mjs arm64",
+        "docker:build": "docker build -t studio-drive:latest .",
+        "docker:up": "docker compose up -d --build",
+        "docker:down": "docker compose down"
     },
     "dependencies": {
         "@modelcontextprotocol/sdk": "^1.20.0",
