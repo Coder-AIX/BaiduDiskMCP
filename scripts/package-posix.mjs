@@ -17,6 +17,7 @@ import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+const productName = pkg.productName || pkg.name;
 const releaseRoot = join(root, "release");
 
 function parseTarget(argv) {
@@ -218,7 +219,7 @@ async function main() {
     }
 
     const arch = process.arch;
-    const folderName = `${pkg.name}-${pkg.version}-${target}-${arch}`;
+    const folderName = `${productName}-${pkg.version}-${target}-${arch}`;
     const outDir = join(releaseRoot, folderName);
     const archivePath = join(releaseRoot, `${folderName}.tar.gz`);
     const launcherSource =

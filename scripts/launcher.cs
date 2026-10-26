@@ -17,7 +17,7 @@ internal static class Program
         {
         }
 
-        Console.Title = "studio-drive";
+        Console.Title = "BaiduDiskMCP";
 
         bool openBrowser = true;
         for (int i = 0; i < args.Length; i++)

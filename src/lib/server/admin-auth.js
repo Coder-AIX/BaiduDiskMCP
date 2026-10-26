@@ -10,7 +10,7 @@ import { AppError, ERROR_CODES } from "./result.js";
 
 const scrypt = promisify(scryptCallback);
 
-export const ADMIN_SESSION_COOKIE = "studio_admin_session";
+export const ADMIN_SESSION_COOKIE = "baidudiskmcp_admin_session";
 export const ADMIN_SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
 const PASSWORD_MIN_LENGTH = 10;

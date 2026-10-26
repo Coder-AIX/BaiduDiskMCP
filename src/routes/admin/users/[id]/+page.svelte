@@ -223,7 +223,7 @@
         const endpoint = new URL("/mcp", window.location.origin).href;
         const config = `{
   "mcpServers": {
-    "studio-drive": {
+    "BaiduDiskMCP": {
       "command": "npx",
       "args": [
         "mcp-remote",

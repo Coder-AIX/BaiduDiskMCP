@@ -9,10 +9,10 @@ import {
 } from "$lib/server/admin-auth.js";
 
 export async function init() {
-    if (globalThis.__studioDriveInitDone) {
+    if (globalThis.__baiduDiskMcpInitDone) {
         return;
     }
-    globalThis.__studioDriveInitDone = true;
+    globalThis.__baiduDiskMcpInitDone = true;
 
     // WHY: 只存放未完成的临时上传数据，进程重启后无法继续使用
     const tempDir = path.resolve(process.cwd(), "data/tmp");

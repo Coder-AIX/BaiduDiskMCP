@@ -105,7 +105,7 @@
                 </svg>
             </span>
             <span class="brand-copy">
-                <span class="brand-name">工作室网盘</span>
+                <span class="brand-name">BaiduDiskMCP</span>
                 <span class="brand-scope">管理端</span>
             </span>
             <button class="nav-close" type="button" aria-label="关闭菜单" onclick={() => (navOpen = false)}>
@@ -152,7 +152,7 @@
         </nav>
 
         <div class="sidebar-foot">
-            <span>百度网盘 · 本地代理</span>
+            <span>百度网盘 · MCP 文件层</span>
             <span>按目录授权</span>
             <button class="logout-btn" type="button" onclick={logout} disabled={loggingOut}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -183,7 +183,7 @@
             </button>
 
             <div class="top-context">
-                <span class="top-product">工作室网盘</span>
+                <span class="top-product">BaiduDiskMCP</span>
                 <span class="top-sep" aria-hidden="true">/</span>
                 <span class="top-section">{currentLabel}</span>
             </div>

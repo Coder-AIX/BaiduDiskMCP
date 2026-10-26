@@ -15,9 +15,10 @@ import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+const productName = pkg.productName || pkg.name;
 const releaseRoot = join(root, "release");
-const outDir = join(releaseRoot, `${pkg.name}-${pkg.version}-win-x64`);
-const zipPath = join(releaseRoot, `${pkg.name}-${pkg.version}-win-x64.zip`);
+const outDir = join(releaseRoot, `${productName}-${pkg.version}-win-x64`);
+const zipPath = join(releaseRoot, `${productName}-${pkg.version}-win-x64.zip`);
 
 function run(command, args, options = {}) {
     execFileSync(command, args, { stdio: "inherit", ...options });
@@ -144,13 +145,13 @@ copyFileSync(nodeExe, join(outDir, "node.exe"));
 copyFileSync(join(root, ".env.example"), join(outDir, ".env"));
 mkdirSync(join(outDir, "data"), { recursive: true });
 
-const readme = `\uFEFFstudio-drive 便携版
+const readme = `\uFEFFBaiduDiskMCP 便携版
 ====================
 
-1. 双击 studio-drive.exe 启动服务。
+1. 双击 BaiduDiskMCP.exe 启动服务。
 2. 启动后会自动打开 http://localhost:3000/admin（端口以 .env 为准）。
 3. 首次访问按页面提示设置管理员密码，然后配置百度网盘 access_token。
-4. 不需要自动打开浏览器时，可执行：studio-drive.exe --no-browser
+4. 不需要自动打开浏览器时，可执行：BaiduDiskMCP.exe --no-browser
 5. 退出时关闭控制台窗口，或按 Ctrl+C。
 
 端口配置
@@ -175,6 +176,21 @@ const readme = `\uFEFFstudio-drive 便携版
 - 启动器依赖 .NET Framework 4.x，Windows 10/11 已自带。
 - 首次运行如出现防火墙提示，需要放行才能让局域网成员访问。
 - 启动器未签名，可能触发 SmartScreen，选择“更多信息 -> 仍要运行”即可。
+
+许可协议
+--------
+本项目采用“个人免费使用、禁止商用”的授权方式：
+
+- 允许：个人学习、研究与自用。
+- 禁止：任何形式的商业用途。
+- 商业授权：如需将本项目用于商业场景，须事先获得作者书面授权。
+  可通过 https://github.com/Coder-AIX/BaiduDiskMCP/issues 联系作者。
+
+本仓库不附带独立 LICENSE 文件；以上说明即为本项目的许可声明。
+
+项目主页
+--------
+https://github.com/Coder-AIX/BaiduDiskMCP
 `;
 
 writeFileSync(join(outDir, "README.txt"), readme, "utf8");
@@ -188,7 +204,7 @@ run(
         "/target:exe",
         "/optimize+",
         "/codepage:65001",
-        "/out:studio-drive.exe",
+        `/out:${productName}.exe`,
         join(root, "scripts", "launcher.cs")
     ],
     { cwd: outDir }

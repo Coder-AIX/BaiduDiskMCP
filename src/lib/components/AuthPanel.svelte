@@ -14,14 +14,14 @@
                     </svg>
                 </span>
                 <span class="brand-copy">
-                    <span class="brand-name">工作室网盘</span>
+                    <span class="brand-name">BaiduDiskMCP</span>
                     <span class="brand-scope">管理端</span>
                 </span>
             </div>
 
             <div class="auth-aside-copy">
                 <p class="auth-line">文件、成员与授权，<br />在一个地方管理。</p>
-                <p class="auth-note">百度网盘 · 本地代理</p>
+                <p class="auth-note">百度网盘 · MCP 文件层</p>
             </div>
         </aside>
 

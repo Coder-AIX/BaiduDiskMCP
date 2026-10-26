@@ -1,7 +1,27 @@
 {
-    "name": "studio-drive",
-    "version": "0.1.0",
+    "name": "baidudiskmcp",
+    "productName": "BaiduDiskMCP",
+    "version": "1.0.0",
     "private": true,
+    "description": "百度网盘 MCP 文件访问层：管理端按目录授权，成员通过 MCP 安全访问文件。",
+    "license": "SEE LICENSE IN README.md",
+    "author": "Coder-AIX",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Coder-AIX/BaiduDiskMCP.git"
+    },
+    "homepage": "https://github.com/Coder-AIX/BaiduDiskMCP",
+    "bugs": {
+        "url": "https://github.com/Coder-AIX/BaiduDiskMCP/issues"
+    },
+    "keywords": [
+        "baidu",
+        "baidunetdisk",
+        "mcp",
+        "model-context-protocol",
+        "file-manager",
+        "sveltekit"
+    ],
     "type": "module",
     "engines": {
         "node": ">=22"
@@ -11,12 +31,13 @@
         "build": "vite build",
         "preview": "vite preview",
         "start": "node --env-file=.env build",
+        "screenshots": "node scripts/capture-screenshots.mjs",
         "package:win": "node scripts/package-win.mjs",
         "package:linux": "node scripts/package-posix.mjs --target linux",
         "package:macos": "node scripts/package-posix.mjs --target macos",
         "package:linux:docker": "node scripts/package-linux-docker.mjs x64",
         "package:linux:docker:arm64": "node scripts/package-linux-docker.mjs arm64",
-        "docker:build": "docker build -t studio-drive:latest .",
+        "docker:build": "docker build -t baidudiskmcp:latest .",
         "docker:up": "docker compose up -d --build",
         "docker:down": "docker compose down"
     },
@@ -30,6 +51,7 @@
         "@sveltejs/adapter-node": "^5.2.0",
         "@sveltejs/kit": "^2.20.0",
         "@sveltejs/vite-plugin-svelte": "^6.0.0",
+        "playwright-core": "^1.56.0",
         "svelte": "^5.20.0",
         "vite": "^7.0.0"
     }

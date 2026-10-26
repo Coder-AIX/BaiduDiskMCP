@@ -2,7 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerTools } from "./tools.js";
 
 // WHAT: 提供给 MCP 客户端的服务说明，帮助模型在调用工具前理解路径、权限与上传下载策略
-const INSTRUCTIONS = `这是内部工作室网盘，用于团队共享文件。
+const INSTRUCTIONS = `这是 BaiduDiskMCP，用于团队共享百度网盘文件。
 
 路径规则：
 - 所有路径都以 / 开头，例如 / 表示根目录，/工作室/项目 表示子目录。
@@ -21,8 +21,8 @@ const INSTRUCTIONS = `这是内部工作室网盘，用于团队共享文件。
 export function createMcpServer(user) {
     const server = new McpServer(
         {
-            name: "studio-drive",
-            version: "0.1.0"
+            name: "BaiduDiskMCP",
+            version: "1.0.0"
         },
         {
             instructions: INSTRUCTIONS

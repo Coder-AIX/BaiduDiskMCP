@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>工作室网盘</title>
+    <title>BaiduDiskMCP</title>
     <meta http-equiv="refresh" content="0; url=/admin" />
 </svelte:head>
 

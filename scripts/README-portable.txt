@@ -1,5 +1,5 @@
-studio-drive 便携版
-====================
+BaiduDiskMCP 便携版
+===================
 
 Linux:
   ./start.sh
@@ -34,3 +34,18 @@ macOS:
 - 启动脚本和 Node 运行时已包含在包内，目标机器无需安装 Node.js。
 - macOS 包未签名，首次打开可能被 Gatekeeper 拦截；右键选择“打开”，
   或执行：xattr -dr com.apple.quarantine <本目录>
+
+许可协议
+--------
+本项目采用“个人免费使用、禁止商用”的授权方式：
+
+- 允许：个人学习、研究与自用。
+- 禁止：任何形式的商业用途。
+- 商业授权：如需将本项目用于商业场景，须事先获得作者书面授权。
+  可通过 https://github.com/Coder-AIX/BaiduDiskMCP/issues 联系作者。
+
+本仓库不附带独立 LICENSE 文件；以上说明即为本项目的许可声明。
+
+项目主页
+--------
+https://github.com/Coder-AIX/BaiduDiskMCP

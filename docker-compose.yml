@@ -1,10 +1,10 @@
 services:
-  studio-drive:
+  baidudiskmcp:
     build:
       context: .
       dockerfile: Dockerfile
-    image: studio-drive:latest
-    container_name: studio-drive
+    image: baidudiskmcp:latest
+    container_name: baidudiskmcp
     restart: unless-stopped
     init: true
     ports:
@@ -20,9 +20,9 @@ services:
     volumes:
       - ./data:/app/data
       # 如果 Docker Desktop 下 SQLite 出现 WAL 锁问题，改用命名卷：
-      # - studio-drive-data:/app/data
+      # - baidudiskmcp-data:/app/data
     stop_grace_period: 30s
 
 # 使用上面的命名卷时取消注释：
 # volumes:
-#   studio-drive-data:
+#   baidudiskmcp-data:

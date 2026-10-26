@@ -1,12 +1,18 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, rmSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { mkdirSync, readFileSync, rmSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+const productName = pkg.productName || pkg.name;
 const arch = process.argv[2] === "arm64" ? "arm64" : "x64";
 const platform = `linux/${arch === "arm64" ? "arm64" : "amd64"}`;
-const destination = resolve(root, "release", `linux-${arch}`);
+const destination = resolve(
+    root,
+    "release",
+    `${productName}-${pkg.version}-linux-${arch}`
+);
 const outputDestination = destination.replace(/\\/g, "/");
 
 try {
